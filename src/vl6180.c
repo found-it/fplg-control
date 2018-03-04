@@ -139,11 +139,11 @@ static int read_data8(int fd, uint16_t regi)
     uint8_t data;
     int     len;
     reg_t   r;
-    r.name = regi;
 
     /*
      *  flip the Intel little-endianess
      */
+    r.name = regi;
     reg_addr[0] = r.byte[1];
     reg_addr[1] = r.byte[0];
     
@@ -167,6 +167,10 @@ static int write_data8(int fd, uint16_t regi, uint8_t data)
 {
     uint8_t buf[3];
     reg_t   r;
+
+    /*
+     *  flip the Intel little-endianess
+     */
     r.name = regi;
     buf[0] = r.byte[1];
     buf[1] = r.byte[0];
@@ -177,5 +181,14 @@ static int write_data8(int fd, uint16_t regi, uint8_t data)
 
 int vl6180_read_range(int fd)
 {
-    return SUCCESS;
+    uint8_t stat;
+    stat = read_data8(fd, 0x04d);
+
+    stat = write_data8(fd, 0x018, 0x01);
+
+    while (((stat = read_data8(fd, 0x04f)) & 0x07) != 0x04);
+    uint8_t range = read_data8(fd, 0x063);
+
+    stat = write_data8(fd, 0x015, 0x07);
+    return range;
 }
