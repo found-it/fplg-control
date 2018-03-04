@@ -19,9 +19,33 @@ void hello()
 }
 
 
-static int setup(const char *dev, int id)
+int setup(const char *dev, int id)
 {
-    return SUCCESS;
+    int fd;
+    int ready = 0;
+
+    /* 
+     *   open up the device 
+     */
+    if ((fd = open(dev, O_RDWR)) < 0)
+    {
+        LOG_ERROR_S("Opening VL6180\n");
+        return ERROR;
+    }
+    else
+        LOG_DEBUG_S("VL6180 Opened Successfully\n");
+    
+    /*
+     *   initialize the device as a slave
+     */
+    if (ioctl(fd, I2C_SLAVE, id) < 0)
+    {
+        LOG_ERROR_S("Initializing Communication with VL6180\n");
+        return ERROR;
+    }
+    else
+        LOG_DEBUG_S("VL6180 Communication Initialized\n");
+    return fd;
 }
 
 static int read_data8(int fd, reg_t regi)

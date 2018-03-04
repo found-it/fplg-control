@@ -18,9 +18,11 @@
 #include "base.h"
 #include "logging.h"
 
-#define DEVICE "/dev/i2c-1"
+#define DEVICE     "/dev/i2c-1"
+#define DEFAULT_ID 0x29
 
 
 void hello();
+int setup(const char *dev, int id);
 int vl6180_read_range(int fd);
 

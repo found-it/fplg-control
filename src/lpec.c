@@ -24,6 +24,7 @@ int main()
     printf("\n\n\n");
 
     hello();
+    int vl_fd = setup(DEVICE, DEFAULT_ID);
 
     return 0;
 }
