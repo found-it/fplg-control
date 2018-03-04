@@ -22,5 +22,8 @@ int main()
     LOG_INFO("this is an info: %d\n", 123);
 
     printf("\n\n\n");
+
+    hello();
+
     return 0;
 }

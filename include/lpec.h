@@ -7,3 +7,4 @@
  */
 
 #include "logging.h"
+#include "vl6180.h"
