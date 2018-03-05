@@ -6,8 +6,8 @@
  *****************************************************
  */
 
-#ifndef LOGGER_H
-#define LOGGER_H
+#ifndef LOGGING_H
+#define LOGGING_H
 
 #define RED     "\033[1;31m"
 #define PURPLE  "\033[1;35m"

@@ -5,6 +5,10 @@
  *
  *****************************************************
  */
+
+#ifndef VL6180_H
+#define VL6180_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -18,11 +22,12 @@
 #include "base.h"
 #include "logging.h"
 
-#define DEVICE     "/dev/i2c-1"
-#define DEFAULT_ID 0x29
+#define VL6180_DEV "/dev/i2c-1"
+#define VL6180_ID  0x29
 
 
-void hello();
-int setup(const char *dev, int id);
-int vl6180_read_range(int fd);
+//int vl6180_setup(const char *dev, int id);
+int vl6180_setup();
+uint8_t vl6180_read_range(int fd);
 
+#endif

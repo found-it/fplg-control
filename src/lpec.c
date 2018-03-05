@@ -23,12 +23,17 @@ int main()
 
     printf("\n\n\n");
 
-    hello();
+#if 0
     int vl_fd = setup(DEVICE, DEFAULT_ID);
     int range = 0;
-    for (int i = 0; i < 100; ++i)
+    for (int i = 0; i < 63; ++i)
         range += vl6180_read_range(vl_fd);
-    printf("range: %d mm\n", range/100);
+    printf("range: %dmm\n", range>>6);
+#endif
+
+    i2c_dev_t vl6180;
+    vl6180_setup(&vl6180);
+    printf("range: %dmm\n", vl6180.read(vl6180.fd));
 
     return 0;
 }
