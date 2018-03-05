@@ -31,9 +31,10 @@ int main()
     printf("range: %dmm\n", range>>6);
 #endif
 
-    i2c_dev_t vl6180;
-    vl6180_setup(&vl6180);
-    printf("range: %dmm\n", vl6180.read(vl6180.fd));
+    i2c_dev_t *vl6180 = vl6180_setup();
+    if (vl6180 == NULL)
+        LOG_ERROR_S("Failed to set up vl6180\n");
+    printf("range: %dmm\n", vl6180->read(vl6180));
 
     return 0;
 }

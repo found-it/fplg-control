@@ -23,7 +23,7 @@ typedef struct i2c_dev
     int      fd;
     int      addr;
     char    *dev;
-    uint8_t (*read)(int);
+    uint8_t (*read)();
     void    (*setup)();
 }i2c_dev_t;
 

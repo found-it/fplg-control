@@ -30,21 +30,22 @@ static int configure_settings(int fd);
  **************************************************************
  */
 //int vl6180_setup(const char *dev, int id)
-int vl6180_setup(i2c_dev_t *vl)
+i2c_dev_t *vl6180_setup()
 {
-    i2c_dev_t tmp;
+    i2c_dev_t *tmp = malloc(sizeof(i2c_dev_t));
     int stat = 0;
-    tmp.addr = VL6180_ID;
-    tmp.dev  = VL6180_DEV;
-    tmp.read = vl6180_read_range;
+
+    tmp->addr = VL6180_ID;
+    tmp->dev  = VL6180_DEV;
+    tmp->read = vl6180_read_range;
 
     /*
      *   open up the device
      */
-    if ((tmp.fd = open(tmp.dev, O_RDWR)) < 0)
+    if ((tmp->fd = open(tmp->dev, O_RDWR)) < 0)
     {
         LOG_ERROR_S("Opening VL6180\n");
-        return ERROR;
+        return NULL;
     }
     else
         LOG_INFO_S("VL6180 Opened Successfully\n");
@@ -52,10 +53,10 @@ int vl6180_setup(i2c_dev_t *vl)
     /*
      *   initialize the device as a slave
      */
-    if (ioctl(tmp.fd, I2C_SLAVE, tmp.addr) < 0)
+    if (ioctl(tmp->fd, I2C_SLAVE, tmp->addr) < 0)
     {
         LOG_ERROR_S("Initializing Communication with VL6180\n");
-        return ERROR;
+        return NULL;
     }
     else
         LOG_INFO_S("VL6180 Communication Initialized\n");
@@ -63,17 +64,17 @@ int vl6180_setup(i2c_dev_t *vl)
     /*
      *   check if fresh out of reset
      */
-    stat = read_data8(tmp.fd, 0x016);
+    stat = read_data8(tmp->fd, 0x016);
     LOG_DEBUG("Fresh out of reset: %0x\n", stat);
 
     /*
      *   Configure with settings from datasheet
      */
-    if ((stat = configure_settings(tmp.fd)) != SUCCESS)
+    if ((stat = configure_settings(tmp->fd)) != SUCCESS)
         LOG_ERROR("Configuring VL6180 on line %d\n", stat);
 
-    *vl = tmp;
-    return SUCCESS;
+    //*vl = tmp;
+    return tmp;
 }
 
 
@@ -225,8 +226,10 @@ static ssize_t write_data8(int fd, uint16_t regi, uint8_t data)
  *  TODO: add error checks
  **************************************************************
  */
-uint8_t vl6180_read_range(int fd)
+uint8_t vl6180_read_range(i2c_dev_t *self)
 {
+
+    int fd = self->fd;
     uint8_t stat;
     stat = read_data8(fd, 0x04d);
 
