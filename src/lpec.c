@@ -11,17 +11,7 @@
 
 int main()
 {
-    printf("\n\n");
-
-    LOG_ERROR("this is an error: %d\n", 123);
-    printf("\n");
-    LOG_DEBUG("this is an debug: %d\n", 123);
-    printf("\n");
-    LOG_WARN("this is an warn: %d\n", 123);
-    printf("\n");
-    LOG_INFO("this is an info: %d\n", 123);
-
-    printf("\n\n\n");
+    printf(GREEN "Welcome to the Linear Power Electronic Controller\n\n" RESET);
 
 #if 0
     int vl_fd = setup(DEVICE, DEFAULT_ID);
@@ -31,10 +21,14 @@ int main()
     printf("range: %dmm\n", range>>6);
 #endif
 
+    LOG_INFO_S("Setting up the VL6180 ToF Sensor...\n");
     i2c_dev_t *vl6180 = vl6180_setup();
     if (vl6180 == NULL)
         LOG_ERROR_S("Failed to set up vl6180\n");
-    printf("range: %dmm\n", vl6180->read(vl6180));
+    while (1)
+    {
+        printf("range: %dmm\n", vl6180->read(vl6180));
+    }
 
     return 0;
 }

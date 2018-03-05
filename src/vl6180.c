@@ -189,7 +189,7 @@ static uint8_t read_data8(int fd, uint16_t regi)
 
     if ((len = read(fd, &data, sizeof(data))) < 0)
     {
-        LOG_ERROR("Register not written, value returned: %d\n", len);
+        LOG_ERROR("Register not read, value returned: %d\n", len);
         return ERROR;
     }
 
@@ -235,7 +235,9 @@ uint8_t vl6180_read_range(i2c_dev_t *self)
 
     stat = write_data8(fd, 0x018, 0x01);
 
+    LOG_DEBUG_S("HERE\n");
     while (((stat = read_data8(fd, 0x04f)) & 0x07) != 0x04);
+    LOG_DEBUG_S("HERE\n");
     uint8_t range = read_data8(fd, 0x063);
 
     stat = write_data8(fd, 0x015, 0x07);
