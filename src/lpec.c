@@ -9,21 +9,26 @@
 #include "../include/lpec.h"
 #include <stdio.h>
 
-int main()
+int main(int argc, char **argv)
 {
-    printf("\n\n");
+    printf(GREEN "Welcome to the Linear Power Electronic Controller\n\n" RESET);
 
-    LOG_ERROR("this is an error: %d\n", 123);
-    printf("\n");
-    LOG_DEBUG("this is an debug: %d\n", 123);
-    printf("\n");
-    LOG_WARN("this is an warn: %d\n", 123);
-    printf("\n");
-    LOG_INFO("this is an info: %d\n", 123);
+#if 0
+    int vl_fd = setup(DEVICE, DEFAULT_ID);
+    int range = 0;
+    for (int i = 0; i < 63; ++i)
+        range += vl6180_read_range(vl_fd);
+    printf("range: %dmm\n", range>>6);
+#endif
 
-    printf("\n\n\n");
-
-    hello();
+    LOG_INFO_S("Setting up the VL6180 ToF Sensor...\n");
+    i2c_dev_t *vl6180 = vl6180_setup();
+    if (vl6180 == NULL)
+        LOG_ERROR_S("Failed to set up vl6180\n");
+    while (1)
+    {
+        printf("range: %dmm\n", vl6180->read(vl6180));
+    }
 
     return 0;
 }
