@@ -1,21 +1,20 @@
-/*****************************************************
- *
+/*
  *  File:   vl6180.c
  *  Author: James Petersen <jpetersenames@gmail.com>
- *
- *****************************************************
  */
+
 #include "../include/vl6180.h"
 
 
-/*
- *  register union, used for quick access to bytes.
+/* 
+ *  register union, used for quick access to bytes. 
  */
 typedef union vl6180_register
 {
     uint16_t name;
     uint8_t  byte[2];
 } vregister_t;
+
 
 /*
  *  static function prototypes
@@ -25,14 +24,8 @@ static uint8_t read_data8(int fd, uint16_t regi);
 static int configure_settings(int fd);
 
 
-
-/**************************************************************
- *  setup()
- *
- *  RETURNS: file descriptor if setup is good, ERROR on error
- **************************************************************
- */
-//int vl6180_setup(const char *dev, int id)
+/*  setup()
+ *  RETURNS: file descriptor if setup is good, ERROR on error */
 i2c_dev_t *vl6180_setup()
 {
     i2c_dev_t *tmp = malloc(sizeof(i2c_dev_t));
@@ -83,19 +76,15 @@ i2c_dev_t *vl6180_setup()
         LOG_ERROR_S("Fresh out of reset register not written to.\n");
 
     return tmp;
-}
+}/* vl6180_setup */
 
 
-/**************************************************************
- *  configure_settings()
- *
- *  RETURNS: SUCCESS if good, ERROR on error
- **************************************************************
- */
+/*  configure_settings()
+ *  RETURNS: SUCCESS if good, ERROR on error */
 static int configure_settings(int fd)
 {
     /*
-    **  Mandatory : private registers
+    **  Mandatory : private registers 
     */
     if (write_data8(fd, 0x0207, 0x01) < 0) return __LINE__;
     if (write_data8(fd, 0x0208, 0x01) < 0) return __LINE__;
@@ -131,7 +120,6 @@ static int configure_settings(int fd)
     /*
     **  Recommended : Public registers - See data sheet for more detail
     */
-
     /* Enables polling for ‘New Sample ready’ when measurement completes */
     if (write_data8(fd, 0x0011, 0x10) < 0) return __LINE__;
 
@@ -156,7 +144,6 @@ static int configure_settings(int fd)
     /*
     ** Optional: Public registers - See data sheet for more detail 
     */
-
     /* Set default ranging inter-measurement period to 100ms */
     if (write_data8(fd, 0x001b, 0x09) < 0) return __LINE__;
 
@@ -166,15 +153,11 @@ static int configure_settings(int fd)
     /* Configures interrupt on ‘New Sample Ready threshold event’ */
     if (write_data8(fd, 0x0014, 0x24) < 0) return __LINE__;
     return SUCCESS;
-}
+}/* configure_settings */
 
 
-/**************************************************************
- *
- *
- *  RETURNS:
- **************************************************************
- */
+/*  read_data8()
+ *  RETURNS: 1 byte of data, ERROR otherwise */
 static uint8_t read_data8(int fd, uint16_t regi)
 {
     uint8_t reg_addr[2];
@@ -182,9 +165,7 @@ static uint8_t read_data8(int fd, uint16_t regi)
     ssize_t len;
     vregister_t r;
 
-    /*
-     *  flip the Intel little-endianess
-     */
+    /* flip the Intel little-endianess */
     r.name = regi;
     reg_addr[0] = r.byte[1];
     reg_addr[1] = r.byte[0];
@@ -202,14 +183,10 @@ static uint8_t read_data8(int fd, uint16_t regi)
     }
 
     return data;
-}
+}/* read_data8 */
 
-/**************************************************************
- *  write_data8
- *
- *  RETURNS: number of bytes written, -1 on error.
- **************************************************************
- */
+/*  write_data8()
+ *  RETURNS: number of bytes written, -1 on error.  */
 static ssize_t write_data8(int fd, uint16_t regi, uint8_t data)
 {
     uint8_t buf[3];
@@ -224,16 +201,12 @@ static ssize_t write_data8(int fd, uint16_t regi, uint8_t data)
     buf[2] = data;
 
     return write(fd, buf, sizeof(buf));
-}
+}/* write_data8 */
 
 
-/**************************************************************
- *
- *
- *  RETURNS:
- *  TODO: add error checks
- **************************************************************
- */
+/*  vl6180_read_range()
+ *  RETURNS: 1 byte range value in mm, ERROR otherwise
+ *  TODO: add error checks */
 uint8_t vl6180_read_range(i2c_dev_t *self)
 {
 
@@ -248,4 +221,4 @@ uint8_t vl6180_read_range(i2c_dev_t *self)
 
     stat = write_data8(fd, 0x015, 0x07);
     return range;
-}
+}/* vl6180_read_range */
