@@ -24,7 +24,6 @@ typedef struct i2c_dev
     int      addr;
     char    *dev;
     uint8_t (*read)();
-    void    (*setup)();
 }i2c_dev_t;
 
 #endif

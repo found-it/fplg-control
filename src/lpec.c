@@ -9,7 +9,7 @@
 #include "../include/lpec.h"
 #include <stdio.h>
 
-int main()
+int main(int argc, char **argv)
 {
     printf(GREEN "Welcome to the Linear Power Electronic Controller\n\n" RESET);
 

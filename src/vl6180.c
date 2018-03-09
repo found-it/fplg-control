@@ -11,12 +11,15 @@
 /*
  *  register union, used for quick access to bytes.
  */
-typedef union reg
+typedef union vl6180_register
 {
     uint16_t name;
     uint8_t  byte[2];
-} reg_t;
+} vregister_t;
 
+/*
+ *  static function prototypes
+ */
 static ssize_t write_data8(int fd, uint16_t regi, uint8_t data);
 static uint8_t read_data8(int fd, uint16_t regi);
 static int configure_settings(int fd);
@@ -64,8 +67,8 @@ i2c_dev_t *vl6180_setup()
     /*
      *   check if fresh out of reset
      */
-    stat = read_data8(tmp->fd, 0x016);
-    LOG_DEBUG("Fresh out of reset: %0x\n", stat);
+    while (((stat = read_data8(tmp->fd, 0x016)) & 0x01) != 0x01);
+    LOG_INFO("Fresh out of reset: %0x\n", stat);
 
     /*
      *   Configure with settings from datasheet
@@ -73,7 +76,12 @@ i2c_dev_t *vl6180_setup()
     if ((stat = configure_settings(tmp->fd)) != SUCCESS)
         LOG_ERROR("Configuring VL6180 on line %d\n", stat);
 
-    //*vl = tmp;
+    /*
+     *   Write 0x00 to fresh out of reset register
+     */
+    if (write_data8(tmp->fd, 0x016, 0x00) < 0) 
+        LOG_ERROR_S("Fresh out of reset register not written to.\n");
+
     return tmp;
 }
 
@@ -172,7 +180,7 @@ static uint8_t read_data8(int fd, uint16_t regi)
     uint8_t reg_addr[2];
     uint8_t data;
     ssize_t len;
-    reg_t   r;
+    vregister_t r;
 
     /*
      *  flip the Intel little-endianess
@@ -205,7 +213,7 @@ static uint8_t read_data8(int fd, uint16_t regi)
 static ssize_t write_data8(int fd, uint16_t regi, uint8_t data)
 {
     uint8_t buf[3];
-    reg_t   r;
+    vregister_t r;
 
     /*
      *  flip the Intel little-endianess
@@ -235,9 +243,7 @@ uint8_t vl6180_read_range(i2c_dev_t *self)
 
     stat = write_data8(fd, 0x018, 0x01);
 
-    LOG_DEBUG_S("HERE\n");
     while (((stat = read_data8(fd, 0x04f)) & 0x07) != 0x04);
-    LOG_DEBUG_S("HERE\n");
     uint8_t range = read_data8(fd, 0x063);
 
     stat = write_data8(fd, 0x015, 0x07);

@@ -26,7 +26,6 @@
 #define VL6180_ID  0x29
 
 
-//int vl6180_setup(const char *dev, int id);
 i2c_dev_t *vl6180_setup();
 uint8_t vl6180_read_range(i2c_dev_t *self);
 
