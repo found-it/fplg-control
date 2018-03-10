@@ -1,9 +1,6 @@
-/*****************************************************
- *
+/*
  *  File:   lpec.c
  *  Author: James Petersen <jpetersenames@gmail.com>
- *
- *****************************************************
  */
 
 #include "../include/lpec.h"
@@ -21,6 +18,7 @@ int main(int argc, char **argv)
     printf("range: %dmm\n", range>>6);
 #endif
 
+    /* vl6180 */
     LOG_INFO_S("Setting up the VL6180 ToF Sensor...\n");
     i2c_dev_t *vl6180 = vl6180_setup();
     if (vl6180 == NULL)

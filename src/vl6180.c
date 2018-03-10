@@ -3,6 +3,9 @@
  *  Author: James Petersen <jpetersenames@gmail.com>
  */
 
+/* Local Includes */
+#include "../include/base.h"
+#include "../include/logging.h"
 #include "../include/vl6180.h"
 
 
@@ -192,9 +195,7 @@ static ssize_t write_data8(int fd, uint16_t regi, uint8_t data)
     uint8_t buf[3];
     vregister_t r;
 
-    /*
-     *  flip the Intel little-endianess
-     */
+    /*  flip the Intel little-endianess */
     r.name = regi;
     buf[0] = r.byte[1];
     buf[1] = r.byte[0];

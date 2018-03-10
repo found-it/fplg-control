@@ -17,9 +17,6 @@
 #include <sys/ioctl.h>
 #include <linux/i2c-dev.h>
 
-/* Local Includes */
-#include "base.h"
-#include "logging.h"
 
 /* Defines */
 #define VL6180_DEV "/dev/i2c-1"
