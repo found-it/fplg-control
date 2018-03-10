@@ -12,11 +12,11 @@
 /* 
  *  register union, used for quick access to bytes. 
  */
-typedef union vl6180_register
+union vl6180_register
 {
     uint16_t name;
     uint8_t  byte[2];
-} vregister_t;
+};
 
 
 /*
@@ -29,11 +29,12 @@ static int configure_settings(int fd);
 
 /*  setup()
  *  RETURNS: file descriptor if setup is good, ERROR on error */
-i2c_dev_t *vl6180_setup()
+struct i2c_device *vl6180_setup()
 {
-    i2c_dev_t *tmp = malloc(sizeof(i2c_dev_t));
+    struct i2c_device *tmp;
     int stat = 0;
 
+    tmp = malloc(sizeof(struct i2c_device));
     tmp->addr = VL6180_ID;
     tmp->dev  = VL6180_DEV;
     tmp->read = vl6180_read_range;
@@ -166,7 +167,7 @@ static uint8_t read_data8(int fd, uint16_t regi)
     uint8_t reg_addr[2];
     uint8_t data;
     ssize_t len;
-    vregister_t r;
+    union vl6180_register r;
 
     /* flip the Intel little-endianess */
     r.name = regi;
@@ -193,7 +194,7 @@ static uint8_t read_data8(int fd, uint16_t regi)
 static ssize_t write_data8(int fd, uint16_t regi, uint8_t data)
 {
     uint8_t buf[3];
-    vregister_t r;
+    union vl6180_register r;
 
     /*  flip the Intel little-endianess */
     r.name = regi;
@@ -208,7 +209,7 @@ static ssize_t write_data8(int fd, uint16_t regi, uint8_t data)
 /*  vl6180_read_range()
  *  RETURNS: 1 byte range value in mm, ERROR otherwise
  *  TODO: add error checks */
-uint8_t vl6180_read_range(i2c_dev_t *self)
+uint8_t vl6180_read_range(struct i2c_device *self)
 {
 
     int fd = self->fd;

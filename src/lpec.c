@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 
     /* vl6180 */
     LOG_INFO_S("Setting up the VL6180 ToF Sensor...\n");
-    i2c_dev_t *vl6180 = vl6180_setup();
+    struct i2c_device *vl6180 = vl6180_setup();
     if (vl6180 == NULL)
         LOG_ERROR_S("Failed to set up vl6180\n");
     while (1)

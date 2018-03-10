@@ -31,7 +31,7 @@
 
     returns a pointer to a fully set up i2c_dev struct
  */
-i2c_dev_t *vl6180_setup();
+struct i2c_device *vl6180_setup();
 
 
 /**
@@ -41,6 +41,6 @@ i2c_dev_t *vl6180_setup();
 
     returns the range as a one byte value
   */
-uint8_t vl6180_read_range(i2c_dev_t *self);
+uint8_t vl6180_read_range(struct i2c_device *self);
 
 #endif
