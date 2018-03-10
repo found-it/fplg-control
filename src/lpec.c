@@ -4,7 +4,10 @@
  */
 
 #include "../include/lpec.h"
-#include <stdio.h>
+#include "../include/base.h"
+#include "../include/logging.h"
+#include "../include/vl6180.h"
+#include "../include/tmp007.h"
 
 int main(int argc, char **argv)
 {
@@ -23,9 +26,15 @@ int main(int argc, char **argv)
     struct i2c_device *vl6180 = vl6180_setup();
     if (vl6180 == NULL)
         LOG_ERROR_S("Failed to set up vl6180\n");
-    while (1)
+
+    LOG_INFO_S("Setting up the TMP007 Temperature Sensor...\n");
+    int tfd = tmp007_setup();
+    int i = 0;
+    while (i < 10)
     {
-        printf("range: %dmm\n", vl6180->read(vl6180));
+        printf("temp:  %0.2f F\n", tmp007_read_temp(tfd));
+        printf("range: %d mm\n", vl6180->read(vl6180));
+        ++i;
     }
 
     return 0;

@@ -8,7 +8,7 @@
 CC      = gcc
 CFLAGS  = -Wall
 
-OBJ     = logging.o lpec.o vl6180.o
+OBJ     = logging.o lpec.o vl6180.o tmp007.o
 
 TARGET  = fplg
 
@@ -23,6 +23,9 @@ logging.o: src/logging.c include/logging.h
 
 vl6180.o: src/vl6180.c include/vl6180.h
 	$(CC) $(CFLAGS) -c src/vl6180.c
+
+tmp007.o: src/tmp007.c include/tmp007.h
+	$(CC) $(CFLAGS) -c src/tmp007.c
 
 clean:
 	rm -f $(OBJ) $(TARGET)

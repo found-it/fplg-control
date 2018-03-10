@@ -6,8 +6,6 @@
 #ifndef LPEC_H
 #define LPEC_H
 
-#include "base.h"
-#include "logging.h"
-#include "vl6180.h"
+#include <stdio.h>
 
 #endif
