@@ -1,6 +1,6 @@
-/*
- *  File:   base.h
- *  Author: James Petersen <jpetersenames@gmail.com>
+/**
+ *  \file   base.h
+ *  \author James Petersen <jpetersenames@gmail.com>
  */
 
 #ifndef BASE_H
@@ -18,16 +18,17 @@
 #define EXIT    1
 
 /**
-    This structure holds all the necessary information
-    for an I2C device.
+    \struct i2c_device
 
-    It is used for the VL6180 and the TMP007.
+    \brief This structure holds all the necessary information
+           for an I2C device. It is used for the VL6180 and
+           the TMP007.
  */
 struct i2c_device
 {
-    int       fd;
-    int       addr;
-    char     *dev;
+    int fd;
+    int addr;
+    char *dev;
     uint8_t (*read)();
 };
 

@@ -1,6 +1,6 @@
-/*
- *  File:   lpec.c
- *  Author: James Petersen <jpetersenames@gmail.com>
+/**
+ *  \file   lpec.c
+ *  \author James Petersen <jpetersenames@gmail.com>
  */
 
 #include "../include/lpec.h"

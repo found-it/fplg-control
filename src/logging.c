@@ -1,4 +1,4 @@
-/*
+/**
  *  File:   logging.c
  *  Author: James Petersen <jpetersenames@gmail.com>
  */

@@ -1,6 +1,6 @@
-/*
- *  File:   lpec.h
- *  Author: James Petersen <jpetersenames@gmail.com>
+/**
+ *  \file   lpec.h
+ *  \author James Petersen <jpetersenames@gmail.com>
  */
 
 #ifndef LPEC_H

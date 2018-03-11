@@ -4,3 +4,4 @@ fplg
 *.old
 /tmp/
 /doc/
+/.docfiles/

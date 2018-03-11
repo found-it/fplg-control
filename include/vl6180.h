@@ -1,6 +1,6 @@
-/*
- *  File:   vl6180.h
- *  Author: James Petersen <jpetersenames@gmail.com>
+/**
+ *  \file   vl6180.h
+ *  \author James Petersen <jpetersenames@gmail.com>
  */
 
 #ifndef VL6180_H
@@ -25,11 +25,11 @@
 /**
     vl6180_setup
 
-    This function sets up the vl6180, sends it all
-    the configuration commands that are given in the 
-    datasheet.
+    \brief  This function sets up the vl6180, sends it all
+            the configuration commands that are given in the
+            datasheet.
 
-    returns a pointer to a fully set up i2c_dev struct
+    \return A pointer to a fully set up i2c_dev struct.
  */
 struct i2c_device *vl6180_setup();
 
@@ -37,9 +37,9 @@ struct i2c_device *vl6180_setup();
 /**
     vl6180_read_range
 
-    This function reads the range in mm
+    \brief  This function reads the range in mm.
 
-    returns the range as a one byte value
+    \return The range as a one byte value.
   */
 uint8_t vl6180_read_range(struct i2c_device *self);
 
