@@ -3,3 +3,4 @@ fplg
 *.o
 *.old
 /tmp/
+/doc/
