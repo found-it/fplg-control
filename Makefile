@@ -1,7 +1,12 @@
-#
+##
 #   File:   Makefile
 #   Author: James Petersen <jpetersenames@gmail.com>
 #
+#   Usage:
+#       make
+#       make doc
+#       make clean
+##
 
 CC      = gcc
 CFLAGS  = -Wall
@@ -33,3 +38,4 @@ doc: src/* include/* Doxyfile
 
 clean:
 	rm -f $(OBJ) $(TARGET)
+	rm -rf .docfiles doc
