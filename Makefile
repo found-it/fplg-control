@@ -1,9 +1,12 @@
-######################################################
-#
+##
 #   File:   Makefile
 #   Author: James Petersen <jpetersenames@gmail.com>
 #
-######################################################
+#   Usage:
+#       make
+#       make doc
+#       make clean
+##
 
 CC      = gcc
 CFLAGS  = -Wall
@@ -27,5 +30,12 @@ vl6180.o: src/vl6180.c include/vl6180.h
 tmp007.o: src/tmp007.c include/tmp007.h
 	$(CC) $(CFLAGS) -c src/tmp007.c
 
+doc: src/* include/* Doxyfile
+	doxygen Doxyfile
+	mkdir -p doc
+	cd doc && ln -sf ../.docfiles/html/index.html lpec_documentation.html
+
+
 clean:
 	rm -f $(OBJ) $(TARGET)
+	rm -rf .docfiles doc

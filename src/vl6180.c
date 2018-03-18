@@ -1,6 +1,6 @@
-/*
- *  File:   vl6180.c
- *  Author: James Petersen <jpetersenames@gmail.com>
+/**
+ *  \file   vl6180.c
+ *  \author James Petersen <jpetersenames@gmail.com>
  */
 
 /* Local Includes */
@@ -9,8 +9,8 @@
 #include "../include/vl6180.h"
 
 
-/* 
- *  register union, used for quick access to bytes. 
+/**
+ *  register union, used for quick access to bytes.
  */
 union vl6180_register
 {
@@ -19,7 +19,7 @@ union vl6180_register
 };
 
 
-/*
+/**
  *  static function prototypes
  */
 static ssize_t write_data8(int fd, uint16_t regi, uint8_t data);
@@ -27,8 +27,10 @@ static uint8_t read_data8(int fd, uint16_t regi);
 static int configure_settings(int fd);
 
 
-/*  setup()
- *  RETURNS: file descriptor if setup is good, ERROR on error */
+/**
+ *  setup()
+ *  \returns file descriptor if setup is good, ERROR on error
+ */
 struct i2c_device *vl6180_setup()
 {
     struct i2c_device *tmp;
@@ -76,19 +78,21 @@ struct i2c_device *vl6180_setup()
     /*
      *   Write 0x00 to fresh out of reset register
      */
-    if (write_data8(tmp->fd, 0x016, 0x00) < 0) 
+    if (write_data8(tmp->fd, 0x016, 0x00) < 0)
         LOG_ERROR_S("Fresh out of reset register not written to.\n");
 
     return tmp;
 }/* vl6180_setup */
 
 
-/*  configure_settings()
- *  RETURNS: SUCCESS if good, ERROR on error */
+/**
+ *  configure_settings()
+ *  \returns SUCCESS if good, ERROR on error
+ */
 static int configure_settings(int fd)
 {
     /*
-    **  Mandatory : private registers 
+    **  Mandatory : private registers
     */
     if (write_data8(fd, 0x0207, 0x01) < 0) return __LINE__;
     if (write_data8(fd, 0x0208, 0x01) < 0) return __LINE__;
@@ -131,11 +135,11 @@ static int configure_settings(int fd)
        and increased execution time) */
     if (write_data8(fd, 0x010a, 0x30) < 0) return __LINE__;
 
-    /* Sets the light and dark gain (upper nibble). Dark gain should 
+    /* Sets the light and dark gain (upper nibble). Dark gain should
        not be changed. */
     if (write_data8(fd, 0x003f, 0x46) < 0) return __LINE__;
 
-    /* sets the # of range measurements after which auto calibration 
+    /* sets the # of range measurements after which auto calibration
        of system is performed */
     if (write_data8(fd, 0x0031, 0xFF) < 0) return __LINE__;
 
@@ -146,7 +150,7 @@ static int configure_settings(int fd)
     if (write_data8(fd, 0x002e, 0x01) < 0) return __LINE__;
 
     /*
-    ** Optional: Public registers - See data sheet for more detail 
+    ** Optional: Public registers - See data sheet for more detail
     */
     /* Set default ranging inter-measurement period to 100ms */
     if (write_data8(fd, 0x001b, 0x09) < 0) return __LINE__;
@@ -160,8 +164,10 @@ static int configure_settings(int fd)
 }/* configure_settings */
 
 
-/*  read_data8()
- *  RETURNS: 1 byte of data, ERROR otherwise */
+/**
+ *  read_data8()
+ *  \returns 1 byte of data, ERROR otherwise
+ */
 static uint8_t read_data8(int fd, uint16_t regi)
 {
     uint8_t reg_addr[2];
@@ -189,8 +195,10 @@ static uint8_t read_data8(int fd, uint16_t regi)
     return data;
 }/* read_data8 */
 
-/*  write_data8()
- *  RETURNS: number of bytes written, -1 on error.  */
+/**
+ *  write_data8()
+ *  \returns number of bytes written, -1 on error.
+ */
 static ssize_t write_data8(int fd, uint16_t regi, uint8_t data)
 {
     uint8_t buf[3];
@@ -206,9 +214,11 @@ static ssize_t write_data8(int fd, uint16_t regi, uint8_t data)
 }/* write_data8 */
 
 
-/*  vl6180_read_range()
- *  RETURNS: 1 byte range value in mm, ERROR otherwise
- *  TODO: add error checks */
+/**
+ *  vl6180_read_range()
+ *  \returns 1 byte range value in mm, ERROR otherwise
+ *  \todo add error checks
+ */
 uint8_t vl6180_read_range(struct i2c_device *self)
 {
 

@@ -1,5 +1,5 @@
-/*
- *  File:   logging.h
+/**
+ *  \file   logging.h
  *  Author: James Petersen <jpetersenames@gmail.com>
  */
 
@@ -26,7 +26,7 @@ void logr(char *fmt, ...);
 
 /**
     Logging macros (with variable capability)
-    
+
     These macros colorize the output and print the location
     of where they were called.
  */
@@ -37,7 +37,7 @@ void logr(char *fmt, ...);
 
 /**
     Logging macros (pure string)
-    
+
     These macros colorize the output and print the location
     of where they were called.
  */
