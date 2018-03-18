@@ -28,11 +28,12 @@ int main(int argc, char **argv)
         LOG_ERROR_S("Failed to set up vl6180\n");
 
     LOG_INFO_S("Setting up the TMP007 Temperature Sensor...\n");
-    int tfd = tmp007_setup();
+    //int tfd = tmp007_setup();
+    struct i2c_device *tmp007 = tmp007_setup();
     int i = 0;
     while (i < 10)
     {
-        printf("temp:  %0.2f F\n", tmp007_read_temp(tfd));
+        printf("temp:  %0.2f F\n", tmp007_read_temp(tmp007));
         printf("range: %d mm\n", vl6180->read(vl6180));
         ++i;
     }

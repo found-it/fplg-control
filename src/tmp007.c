@@ -43,9 +43,11 @@ struct i2c_device *tmp007_setup()
     tmp = malloc(sizeof(struct i2c_device));
     tmp->addr  = TMP007_ID;
     tmp->dev   = TMP007_DEV;
+/*
     tmp->read  = tmp007_read_temp;
     tmp->readf = NULL;
     tmp->readi = NULL;
+*/
     /*
      *   open up the device
      */
@@ -153,16 +155,18 @@ static float convert_temp_f(union data16 data)
  *  RETURNS:
  *  TODO: add error checks
  */
-union return_data tmp007_read_temp(struct i2c_device *self)
+float tmp007_read_temp(struct i2c_device *self)
 {
     union data16 data;
-    union return_data ret;
+//    union return_data ret;
     if ((data.value = tmp_read_data16(self->fd, OBJECT_TEMP_REGISTER)) == ERROR)
     {
         LOG_ERROR_S("Error getting temp\n");
-        ret.temp = -1;
-        return ret;
+//        ret.temp = -1;
+//        return ret;
+        return ERROR;
     }
-    ret.temp =  convert_temp_f(data);
-    return ret;
+//    ret.temp =  convert_temp_f(data);
+//    return ret;
+    return convert_temp_f(data);
 }
