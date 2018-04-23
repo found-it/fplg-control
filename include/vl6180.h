@@ -22,6 +22,11 @@
 #define VL6180_DEV "/dev/i2c-1"
 #define VL6180_ID  0x29
 
+#define VL6180_SYSRANGE_START          0x018
+#define VL6180_SYSTEM_INTERRUPT_CLEAR  0x015
+#define VL6180_RESULT_RANGE_STATUS     0x04d
+#define VL6180_RESULT_INTERRUPT_STATUS 0x04f
+
 /**
     vl6180_setup
 

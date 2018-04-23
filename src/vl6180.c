@@ -182,13 +182,13 @@ static uint8_t read_data8(int fd, uint16_t regi)
 
     if ((len = write(fd, reg_addr, sizeof(reg_addr))) < 0)
     {
-        LOG_ERROR("Register not written, value returned: %d\n", len);
+        LOG_ERROR("Register not written, value returned: %ld\n", len);
         return ERROR;
     }
 
     if ((len = read(fd, &data, sizeof(data))) < 0)
     {
-        LOG_ERROR("Register not read, value returned: %d\n", len);
+        LOG_ERROR("Register not read, value returned: %ld\n", len);
         return ERROR;
     }
 
@@ -221,16 +221,15 @@ static ssize_t write_data8(int fd, uint16_t regi, uint8_t data)
  */
 uint8_t vl6180_read_range(struct i2c_device *self)
 {
-
     int fd = self->fd;
     uint8_t stat;
-    stat = read_data8(fd, 0x04d);
+    stat = read_data8(fd, VL6180_RESULT_RANGE_STATUS);
 
-    stat = write_data8(fd, 0x018, 0x01);
+    stat = write_data8(fd, VL6180_SYSRANGE_START, 0x01);
 
-    while (((stat = read_data8(fd, 0x04f)) & 0x07) != 0x04);
+    while (((stat = read_data8(fd, VL6180_RESULT_INTERRUPT_STATUS)) & 0x07) != 0x04);
     uint8_t range = read_data8(fd, 0x063);
 
-    stat = write_data8(fd, 0x015, 0x07);
+    stat = write_data8(fd, VL6180_SYSTEM_INTERRUPT_CLEAR, 0x07);
     return range;
 }/* vl6180_read_range */
