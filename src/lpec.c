@@ -37,6 +37,7 @@ int main(int argc, char **argv)
         printf("range: %d mm\n", vl6180->read(vl6180));
         ++i;
     }
-
+    free(vl6180);
+    free(tmp007);
     return 0;
 }
