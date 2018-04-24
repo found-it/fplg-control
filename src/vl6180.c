@@ -66,7 +66,7 @@ struct i2c_device *vl6180_setup()
     /*
      *   check if fresh out of reset
      */
-    while (((stat = read_data8(tmp->fd, 0x016)) & 0x01) != 0x01);
+    while (((stat = read_data8(tmp->fd, VL6180_SYSTEM_FRESH_OUT_OF_RESET)) & 0x01) != 0x01);
     LOG_INFO("Fresh out of reset: %0x\n", stat);
 
     /*
@@ -78,7 +78,7 @@ struct i2c_device *vl6180_setup()
     /*
      *   Write 0x00 to fresh out of reset register
      */
-    if (write_data8(tmp->fd, 0x016, 0x00) < 0)
+    if (write_data8(tmp->fd, VL6180_SYSTEM_FRESH_OUT_OF_RESET, 0x00) < 0)
         LOG_ERROR_S("Fresh out of reset register not written to.\n");
 
     return tmp;
@@ -228,7 +228,7 @@ uint8_t vl6180_read_range(struct i2c_device *self)
     stat = write_data8(fd, VL6180_SYSRANGE_START, 0x01);
 
     while (((stat = read_data8(fd, VL6180_RESULT_INTERRUPT_STATUS)) & 0x07) != 0x04);
-    uint8_t range = read_data8(fd, 0x063);
+    uint8_t range = read_data8(fd, VL6180_RESULT_RANGE_VAL);
 
     stat = write_data8(fd, VL6180_SYSTEM_INTERRUPT_CLEAR, 0x07);
     return range;
