@@ -32,19 +32,18 @@ tmp007.o: src/tmp007.c include/tmp007.h
 
 doc: src/* include/* Doxyfile
 ifeq (, $(shell which doxygen))
-	@echo "\033[31mDoxygen is not installed.\033[0m"
-	@echo "\033[32mInstalling using \033[36msudo apt-get install doxygen\033[0m"
-	sudo apt-get install doxygen
-endif
-ifeq (, $(shell which graphviz))
-	@echo "\033[31mDoxygen needs the dot utility."
-	@echo "\033[32mInstalling graphviz-dot using \033[36msudo apt-get install graphviz\033[0m"
-	sudo apt-get install graphviz
+    $(error Doxygen is not installed.)
 endif
 	doxygen Doxyfile
 	mkdir -p doc
 	@echo "\033[92mSymbolically linking the documentation HTML file into doc/\033[0m"
 	cd doc && ln -sf ../.docfiles/html/index.html lpec_documentation.html
+ifeq (, $(shell which pdflatex))
+    $(error pdflatex is not installed. See dependencies in README.md)
+endif
+	cd .docfiles/latex && make
+	cp .docfiles/latex/refman.pdf doc/lpec_documentation.pdf
+	@echo "\033[92mCreated PDF documentation in doc/\033[0m"
 
 clean:
 	rm -f $(OBJ) $(TARGET)

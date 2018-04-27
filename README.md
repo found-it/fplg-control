@@ -16,7 +16,8 @@ The following dependencies must be installed before the project can be documente
 ```shell
 
 sudo apt-get install doxygen
-
+sudo apt-get install graphviz       # DOT Utility
+sudo apt-get install texlive-full   # Needed to generate PDF (WARNING: 4GB)
 
 ```
 
