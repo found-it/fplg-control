@@ -31,7 +31,7 @@
 
 
 struct i2c_device *tmp007_setup();
-float tmp007_read_temp(struct i2c_device *self);
+float tmp007_read_temp(const struct i2c_device *self);
 //union return_data tmp007_read_temp(struct i2c_device *self);
 
 

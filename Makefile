@@ -42,7 +42,7 @@ ifeq (, $(shell which pdflatex))
     $(error pdflatex is not installed. See dependencies in README.md)
 endif
 	cd .docfiles/latex && make
-	cp .docfiles/latex/refman.pdf doc/lpec_documentation.pdf
+	cp .docfiles/latex/refman.pdf doc/lpec_sensor_interface.pdf
 	@echo "\033[92mCreated PDF documentation in doc/\033[0m"
 
 clean:

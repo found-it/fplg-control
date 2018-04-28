@@ -48,6 +48,6 @@ struct i2c_device *vl6180_setup();
 
     \return The range as a one byte value.
   */
-uint8_t vl6180_read_range(struct i2c_device *self);
+uint8_t vl6180_read_range(const struct i2c_device *self);
 
 #endif

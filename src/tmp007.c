@@ -1,6 +1,6 @@
-/*
- *  File:   tmp007.c
- *  Author: James Petersen <jpetersenames@gmail.com>
+/**
+ *  \file   tmp007.c
+ *  \author James Petersen <jpetersenames@gmail.com>
  */
 
 #include "../include/base.h"
@@ -20,20 +20,20 @@ union data16
 /*
  *  static function prototypes
  */
-static inline int configure_reg(int fd);
-static uint16_t tmp_read_data16(int fd, uint8_t reg);
-static ssize_t __tmp_write_data__(int fd, uint8_t reg, uint8_t *data, size_t size);
-static float convert_temp_f(union data16 data);
+static inline int configure_reg(const int fd);
+static uint16_t tmp_read_data16(const int fd, const uint8_t reg);
+static ssize_t __tmp_write_data__(const int fd, const uint8_t reg, const uint8_t *data, const size_t size);
+static float convert_temp_f(const union data16 data);
 
-/*
+/**
  *  tmp_tmp_write_data MACRO
  */
 #define tmp_write_data(fd, reg, data) __tmp_write_data__(fd, reg, data, sizeof(data)/sizeof(uint8_t))
 
-/*
+/**
  *  setup()
  *
- *  RETURNS: file descriptor if setup is good, ERROR on error
+ *  \returns Fully allocated i2c_device struct if setup is good, NULL on error.
  */
 struct i2c_device *tmp007_setup()
 {
@@ -43,11 +43,7 @@ struct i2c_device *tmp007_setup()
     tmp = malloc(sizeof(struct i2c_device));
     tmp->addr  = TMP007_ID;
     tmp->dev   = TMP007_DEV;
-/*
-    tmp->read  = tmp007_read_temp;
-    tmp->readf = NULL;
-    tmp->readi = NULL;
-*/
+
     /*
      *   open up the device
      */
@@ -85,9 +81,11 @@ struct i2c_device *tmp007_setup()
 }
 
 
-/*  configure_reg()
- *  RETURNS: number of bytes written */
-static inline int configure_reg(int fd)
+/**
+ *  configure_reg()
+ *  \returns number of bytes written.
+ */
+static inline int configure_reg(const int fd)
 {
     uint8_t config[2];
     config[0] = 0x15;
@@ -96,9 +94,11 @@ static inline int configure_reg(int fd)
 }
 
 
-/*  tmp_read_data16()
- *  RETURNS: 2 bytes of read data, ERROR otherwise */
-static uint16_t tmp_read_data16(int fd, uint8_t reg)
+/**
+ *  tmp_read_data16()
+ *  \returns 2 bytes of read data, ERROR otherwise.
+ */
+static uint16_t tmp_read_data16(const int fd, const uint8_t reg)
 {
     uint16_t data;
     if (write(fd, &reg, 1) != 1)
@@ -113,10 +113,12 @@ static uint16_t tmp_read_data16(int fd, uint8_t reg)
     return data;
 }
 
-/*  __tmp_write_data__()
+/**
+ *  __tmp_write_data__()
  *  This is the main function for the tmp_write_data() macro
- *  RETURNS: number of bytes written, ERROR otherwise */
-static ssize_t __tmp_write_data__(int fd, uint8_t reg, uint8_t *data, size_t size)
+ *  \returns Number of bytes written, ERROR otherwise.
+ */
+static ssize_t __tmp_write_data__(const int fd, const uint8_t reg, const uint8_t *data, const size_t size)
 {
     if (size > 2)
     {
@@ -133,9 +135,11 @@ static ssize_t __tmp_write_data__(int fd, uint8_t reg, uint8_t *data, size_t siz
     return write(fd, w, len);
 }
 
-/*  convert_temp_f()
- *  RETURNS: converted temperature data in fahrenheit */
-static float convert_temp_f(union data16 data)
+/**
+ *  convert_temp_f()
+ *  \returns Converted temperature data in fahrenheit.
+ */
+static float convert_temp_f(const union data16 data)
 {
     /*
      *  flip the Intel little-endianess
@@ -149,24 +153,19 @@ static float convert_temp_f(union data16 data)
 }
 
 
-/*
+/**
  *  tmp007_read_temp()
  *
- *  RETURNS:
+ *  \returns The temperature in Fahrenheit.
  *  TODO: add error checks
  */
-float tmp007_read_temp(struct i2c_device *self)
+float tmp007_read_temp(const struct i2c_device *self)
 {
     union data16 data;
-//    union return_data ret;
     if ((data.value = tmp_read_data16(self->fd, OBJECT_TEMP_REGISTER)) == ERROR)
     {
         LOG_ERROR_S("Error getting temp\n");
-//        ret.temp = -1;
-//        return ret;
         return ERROR;
     }
-//    ret.temp =  convert_temp_f(data);
-//    return ret;
     return convert_temp_f(data);
 }

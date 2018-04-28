@@ -22,14 +22,14 @@ union vl6180_register
 /**
  *  static function prototypes
  */
-static ssize_t write_data8(int fd, uint16_t regi, uint8_t data);
-static uint8_t read_data8(int fd, uint16_t regi);
-static int configure_settings(int fd);
+static ssize_t write_data8(const int fd, const uint16_t regi, const uint8_t data);
+static uint8_t read_data8(const int fd, const uint16_t regi);
+static int configure_settings(const int fd);
 
 
 /**
- *  setup()
- *  \returns file descriptor if setup is good, ERROR on error
+ *  vl6180_setup()
+ *  \returns fully allocated i2c_device struct if setup is good, NULL on error
  */
 struct i2c_device *vl6180_setup()
 {
@@ -89,7 +89,7 @@ struct i2c_device *vl6180_setup()
  *  configure_settings()
  *  \returns SUCCESS if good, ERROR on error
  */
-static int configure_settings(int fd)
+static int configure_settings(const int fd)
 {
     /*
     **  Mandatory : private registers
@@ -168,7 +168,7 @@ static int configure_settings(int fd)
  *  read_data8()
  *  \returns 1 byte of data, ERROR otherwise
  */
-static uint8_t read_data8(int fd, uint16_t regi)
+static uint8_t read_data8(const int fd, const uint16_t regi)
 {
     uint8_t reg_addr[2];
     uint8_t data;
@@ -199,7 +199,7 @@ static uint8_t read_data8(int fd, uint16_t regi)
  *  write_data8()
  *  \returns number of bytes written, -1 on error.
  */
-static ssize_t write_data8(int fd, uint16_t regi, uint8_t data)
+static ssize_t write_data8(const int fd, const uint16_t regi, const uint8_t data)
 {
     uint8_t buf[3];
     union vl6180_register r;
@@ -219,7 +219,7 @@ static ssize_t write_data8(int fd, uint16_t regi, uint8_t data)
  *  \returns 1 byte range value in mm, ERROR otherwise
  *  \todo add error checks
  */
-uint8_t vl6180_read_range(struct i2c_device *self)
+uint8_t vl6180_read_range(const struct i2c_device *self)
 {
     int fd = self->fd;
     uint8_t stat;
